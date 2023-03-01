@@ -1,20 +1,22 @@
 import 'package:desafio_flutter/providers/series_bloc.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  final seriesBloc= SeriesBloc();
+import '../search/search_delegate.dart';
 
-  HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+
+  const HomeScreen({super.key});
 
   @override 
   Widget build(BuildContext context) {
+    final seriesBloc= SeriesBloc();
     return Scaffold(
       appBar: AppBar(
         title: const Text("TV Series"),
         actions:[
           IconButton(
             icon: const Icon(Icons.search_outlined),
-            onPressed: () {}
+            onPressed: () => showSearch(context: context, delegate: SerieSearchDelegate())
           ,)
         ],
       ),

@@ -114,7 +114,7 @@ class _Genres extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
-      child:Column(
+      child:Column( 
         crossAxisAlignment: CrossAxisAlignment.start,
         children:[
           ...serie["genres"].map((ep,)=> Text('\u2022 $ep')
@@ -123,7 +123,7 @@ class _Genres extends StatelessWidget {
       )
     );
   }
-}
+} 
 
 class _SeasonsList extends StatelessWidget {
   final String idShow;
