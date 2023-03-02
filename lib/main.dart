@@ -1,4 +1,6 @@
+import 'package:desafio_flutter/providers/series_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'screens/screens.dart';
 
@@ -10,20 +12,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Series TV',
-      initialRoute: 'home',
-      routes:{
-        'home': ( _ ) => HomeScreen(),
-        'details': ( _ ) => const DetailScreen(),
-        'season': ( _ ) => const SeasonScreen(),
-        'episode': ( _ ) => const EpisodeScreen(),
-      },
-      theme:ThemeData.light().copyWith(
-        appBarTheme: AppBarTheme(
-          color:Colors.amber[600]
-        )
+    return MultiBlocProvider(
+      providers:const [
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Series TV',
+        initialRoute: 'home',
+        routes:{
+          'home': ( _ ) => const HomeScreen(),
+          'details': ( _ ) => const DetailScreen(),
+          'season': ( _ ) => const SeasonScreen(),
+          'episode': ( _ ) => const EpisodeScreen(),
+        },
+        theme:ThemeData.light().copyWith(
+          appBarTheme: AppBarTheme(
+            color:Colors.amber[600]
+          )
+        ),
       ),
     );
   }

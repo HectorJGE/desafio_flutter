@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     
@@ -43,6 +43,12 @@ class _PosterTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String urlImg = '';
+    if(instanceSerie['image'] != null){
+      urlImg= instanceSerie['image']['original'];
+    }else{
+      urlImg= 'https://www.classify24.com/wp-content/uploads/2015/11/no-image.png';
+    }
     return Container(
       margin: const EdgeInsets.only(top:20),
       padding:const EdgeInsets.symmetric(horizontal: 30),
@@ -51,8 +57,10 @@ class _PosterTitle extends StatelessWidget {
           ClipRRect(
             child: FadeInImage(
               placeholder: const AssetImage('assets/loading1.gif'),
-              image: NetworkImage(instanceSerie['image']['original']),
+              image: NetworkImage(urlImg),
               height: 170,
+              width: 123,
+              fit:BoxFit.cover,
             )
           ),
           const SizedBox(width: 20),

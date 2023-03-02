@@ -24,7 +24,7 @@ void getEpisodesApi(String idSeason) async {
 
 void getSearchApi(String query) async {
   final response = await Dio().get('https://api.tvmaze.com/search/shows?q=$query');
-  onDisplayEpisodes = response.data;
+  onDisplaySearch = response.data;
 }
 
 class SeriesBloc{
