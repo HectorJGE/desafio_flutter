@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../providers/series_bloc.dart';
+import '../providers/api_provider.dart';
 
 class SerieSearchDelegate extends SearchDelegate {
   @override
@@ -36,12 +36,10 @@ class SerieSearchDelegate extends SearchDelegate {
         child: Icon(Icons.tv, color: Colors.black38, size:100)
       );
     }else{
-      final searchBloc= SearchBloc(query:query);
       return Column(
           children: [
             Expanded(
                 child:StreamBuilder(
-                  stream:searchBloc.getSearch,
                   builder: ( _ , AsyncSnapshot<List<dynamic>> snapshot){
 
                     final series = snapshot.data ?? [ ];

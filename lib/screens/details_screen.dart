@@ -1,4 +1,4 @@
-import 'package:desafio_flutter/providers/series_bloc.dart';
+import 'package:desafio_flutter/providers/api_provider.dart';
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -141,12 +141,10 @@ class _SeasonsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final seasonsBloc= SeasonsBloc(idShow:idShow);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
       child:StreamBuilder(
-        stream:seasonsBloc.getSeasons,
         builder: ( _ , AsyncSnapshot<List<dynamic>> snapshot){
 
           final season = snapshot.data ?? [ ];

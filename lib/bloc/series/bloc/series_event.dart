@@ -2,8 +2,9 @@ part of 'series_bloc.dart';
 
 @immutable
 abstract class SeriesEvent {
-  final List? props;
-  const SeriesEvent({this.props}) : super();
+  const SeriesEvent();
+
+  List<Object> get props => [];
 }
 
 class FetchSeries extends SeriesEvent{}

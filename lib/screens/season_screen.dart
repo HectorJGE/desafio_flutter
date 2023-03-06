@@ -1,4 +1,4 @@
-import 'package:desafio_flutter/providers/series_bloc.dart';
+import 'package:desafio_flutter/providers/api_provider.dart';
 import 'package:flutter/material.dart';
 
 class SeasonScreen extends StatelessWidget {
@@ -7,7 +7,6 @@ class SeasonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dynamic season = ModalRoute.of(context)?.settings.arguments ?? 'no-serie'; 
-    final episodesBloc= EpisodesBloc(idSeason:season['id'].toString());
     return Scaffold(
         appBar: AppBar(
           title: Text("Season ${season['number']}"),
@@ -16,7 +15,6 @@ class SeasonScreen extends StatelessWidget {
           children: [
             Expanded(
                 child:StreamBuilder(
-                  stream:episodesBloc.getEpisodes,
                   builder: ( _ , AsyncSnapshot<List<dynamic>> snapshot){
 
                     final episodes = snapshot.data ?? [ ];

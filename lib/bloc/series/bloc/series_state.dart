@@ -2,8 +2,8 @@ part of 'series_bloc.dart';
 
 @immutable
 abstract class SeriesState {
-  final List? props;
-  const SeriesState({this.props}) : super();
+  const SeriesState();
+  List<Object> get props =>[];
 }
 
 class InitialSeriesState extends SeriesState {}
@@ -11,9 +11,11 @@ class InitialSeriesState extends SeriesState {}
 class SeriesLoading extends SeriesState {}
 
 class SeriesLoaded extends SeriesState {
-  final List? series;
-
-  const SeriesLoaded({this.series}) : super();
+  final Series series;
+  const SeriesLoaded(this.series);
 }
 
-class SeriesNotLoaded extends SeriesState {}
+class SeriesNotLoaded extends SeriesState {
+  final String? errorMessage;
+  const SeriesNotLoaded(this.errorMessage);
+}
