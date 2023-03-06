@@ -11,7 +11,7 @@ class InitialSeriesState extends SeriesState {}
 class SeriesLoading extends SeriesState {}
 
 class SeriesLoaded extends SeriesState {
-  final Series series;
+  final List<dynamic> series;
   const SeriesLoaded(this.series);
 }
 

@@ -1,5 +1,7 @@
+import 'package:desafio_flutter/bloc/seasons/seasons_bloc.dart';
 import 'package:desafio_flutter/providers/api_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen({super.key});
@@ -27,7 +29,7 @@ class DetailScreen extends StatelessWidget {
             const ListTile(title:Text('> Summary:')),
             _Descripcion(descripcion:serie['summary']),
             const ListTile(title:Text('> Seasons:')),
-            _SeasonsList(idShow:serie['id'].toString())
+            _SeasonsList(idShow:serie['id'])
           ]
         )
       )
@@ -133,37 +135,75 @@ class _Genres extends StatelessWidget {
   }
 } 
 
-class _SeasonsList extends StatelessWidget {
-  final String idShow;
-
+class _SeasonsList extends StatefulWidget {
+  final int idShow;
   const _SeasonsList({required this.idShow});
+
+  State<_SeasonsList> createState() => __SeasonsListState(idShow: idShow);
+}
+
+class __SeasonsListState extends State<_SeasonsList> {
+  final int idShow;
+  late final SeasonsBloc _seasonsBloc;
+  __SeasonsListState({required this.idShow});
+
+
+  @override 
+  void initState(){
+    _seasonsBloc=SeasonsBloc(idShow:idShow);
+    _seasonsBloc.add(FetchSeasons());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-      child:StreamBuilder(
-        builder: ( _ , AsyncSnapshot<List<dynamic>> snapshot){
-
-          final season = snapshot.data ?? [ ];
-          
-          return ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: season.length,
-              itemBuilder: (_, i ){
-                return ListTile(
-                  onTap: () => Navigator.pushNamed(context,'season',arguments:season[i]),
-                  title:Text('Season: ${i+1}'),
-                  trailing: const Icon(Icons.arrow_forward_ios_outlined)
+      child:_builtListSeries()
+    );
+  }
+  Widget _builtListSeries () {
+    return Container(
+      margin:const EdgeInsets.all(8.0),
+      child: BlocProvider(
+        create: (_) => _seasonsBloc,
+        child:BlocListener <SeasonsBloc,SeasonsState> (
+          listener: (context, state){
+            if(state is SeasonsNotLoaded) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.errorMessage??'Error'))
+              );
+            }
+          },
+          child:BlocBuilder<SeasonsBloc,SeasonsState>(
+            builder: (context, state){
+              if(state is InitialSeasonsState){
+                return _buildLoading();
+              }else if (state is SeasonsLoading){
+                return _buildLoading();
+              }else if (state is SeasonsLoaded){
+                return SingleChildScrollView(
+                  child: Column(
+                    children:
+                      List.generate(state.seasons.length, (index) => 
+                        ListTile(
+                          onTap: () => Navigator.pushNamed(context,'season',arguments:state.seasons[index]),
+                          title:Text('Season: ${index+1}'),
+                          trailing: const Icon(Icons.arrow_forward_ios_outlined)
+                        )
+                      )
+                  )
                 );
+              }else if (state is SeasonsNotLoaded){
+                return Container();
+              }else {
+                return Container();
               }
-          );
-        }
+            })
+        ),
       )
     );
   }
+  Widget _buildLoading() => const Center(child:CircularProgressIndicator());
 }
 

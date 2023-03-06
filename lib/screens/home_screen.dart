@@ -1,6 +1,4 @@
-import 'package:desafio_flutter/bloc/series/bloc/series_bloc.dart';
-import 'package:desafio_flutter/models/serie.dart';
-import 'package:desafio_flutter/providers/api_provider.dart';
+import 'package:desafio_flutter/bloc/series/series_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,7 +56,13 @@ class _HomeScreenState extends State<HomeScreen> {
               }else if (state is SeriesLoading){
                 return _buildLoading();
               }else if (state is SeriesLoaded){
-                return _SerieContainer(serie:state.series);
+                return SingleChildScrollView(
+                  child: Column(
+                      children:
+                        List.generate(state.series.length, (index) => 
+                          _SerieContainer(serie: state.series[index]))
+                    )
+                );
               }else if (state is SeriesNotLoaded){
                 return Container();
               }else {
@@ -74,15 +78,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _SerieContainer extends StatelessWidget {
 
-  final Series serie;
+  final dynamic serie;
 
   const _SerieContainer({required this.serie});
 
   @override
   Widget build(BuildContext context) {
     String? url;
-    if(serie.image?.original != null && serie.image != null){
-      url=serie.image?.original;
+    if(serie['image']?['original'] != null && serie['image'] != null){
+      url=serie['image']?['original'];
     }else{
       url='https://www.classify24.com/wp-content/uploads/2015/11/no-image.png';
     }
@@ -107,7 +111,7 @@ class _SerieContainer extends StatelessWidget {
             
             Flexible(
               child: Text(
-                serie.name??' - ',
+                serie['name']??' - ',
                 maxLines: 3,
                 overflow: TextOverflow.visible,
               )

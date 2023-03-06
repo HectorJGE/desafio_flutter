@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../providers/api_provider.dart';
 
 class SerieSearchDelegate extends SearchDelegate {
   @override

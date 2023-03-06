@@ -1,4 +1,3 @@
-import 'package:desafio_flutter/models/serie.dart';
 import 'package:desafio_flutter/providers/api_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -13,11 +12,8 @@ class SeriesBloc extends Bloc<SeriesEvent, SeriesState>{
     on<FetchSeries>((event,emit)async {
       try{
         emit(SeriesLoading());
-        final seriesList = await apiRepository.fetchSeriesList();
+        final List<dynamic> seriesList = await apiRepository.fetchSeriesList();
         emit(SeriesLoaded(seriesList));
-        if(seriesList.error != null){
-          emit(SeriesNotLoaded(seriesList.error));
-        }
       }
       on NetworkError {
         emit(const SeriesNotLoaded("Failed to fetch data"));

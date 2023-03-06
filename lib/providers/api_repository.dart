@@ -1,13 +1,22 @@
-  
-
-import 'package:desafio_flutter/models/serie.dart';
 import 'package:desafio_flutter/providers/api_provider.dart';
 
 class ApiRepository {
 
   final _provider = ApiProvider();
-  Future<Series> fetchSeriesList(){
-    return _provider.fetchSeriesList();
+  Future<List> fetchSeriesList(){
+    return _provider.fetchSeriesList(0);
+  }
+  
+  Future<List> fetchSeasonsList(nro){
+    return _provider.fetchSeasonsList(nro);
+  }
+
+  Future<List> fetchEpisodesList(nro){
+    return _provider.fetchEpisodesList(nro);
+  }
+
+  Future<List> fetchSearchList(query){
+    return _provider.fetchSearchList(query);
   }
 }
 
