@@ -6,6 +6,12 @@ class EpisodeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dynamic episode = ModalRoute.of(context)?.settings.arguments ?? {}; 
+    String urlImg;
+    if(episode['image'] != null){
+      urlImg= episode['image']['original'];
+    }else{
+      urlImg= 'https://www.classify24.com/wp-content/uploads/2015/11/no-image.png';
+    }
     return Scaffold(
         appBar: AppBar(
           title: Text("Episode ${episode['number']}"),
@@ -18,7 +24,7 @@ class EpisodeScreen extends StatelessWidget {
             _Dato(titulo:'Number: ',texto:episode['number'].toString()),
             _Dato(titulo:'Season: ',texto:episode['season'].toString()),
             _Dato(titulo:'Summary: ',texto:episode['summary']??'-'),
-            _Imagen(urlImg: episode['image']['original']??'')
+            _Imagen(urlImg: urlImg)
 
             
           ]
@@ -56,6 +62,7 @@ class _Imagen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
       child: Column(

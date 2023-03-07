@@ -7,4 +7,4 @@ abstract class EpisodesEvent {
   List<Object> get props => [];
 }
 
-class FetchSeasons extends EpisodesEvent{}
+class FetchEpisodes extends EpisodesEvent{}

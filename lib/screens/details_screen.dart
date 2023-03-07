@@ -1,5 +1,4 @@
 import 'package:desafio_flutter/bloc/seasons/seasons_bloc.dart';
-import 'package:desafio_flutter/providers/api_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -139,6 +138,7 @@ class _SeasonsList extends StatefulWidget {
   final int idShow;
   const _SeasonsList({required this.idShow});
 
+  @override
   State<_SeasonsList> createState() => __SeasonsListState(idShow: idShow);
 }
 
@@ -159,10 +159,10 @@ class __SeasonsListState extends State<_SeasonsList> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-      child:_builtListSeries()
+      child:_builtListEpisodes()
     );
   }
-  Widget _builtListSeries () {
+  Widget _builtListEpisodes () {
     return Container(
       margin:const EdgeInsets.all(8.0),
       child: BlocProvider(

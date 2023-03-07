@@ -10,7 +10,7 @@ class EpisodesBloc extends Bloc<EpisodesEvent, EpisodesState>{
   EpisodesBloc({required this.idSeason}) : super(InitialEpisodesState()){
     final ApiRepository apiRepository = ApiRepository();
     
-    on<FetchSeasons>((event,emit)async {
+    on<FetchEpisodes>((event,emit)async {
       try{
         emit(EpisodesLoading());
         final List<dynamic> episodesList = await apiRepository.fetchEpisodesList(idSeason);

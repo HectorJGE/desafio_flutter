@@ -1,10 +1,20 @@
 part of 'search_bloc.dart';
 
-abstract class SearchState extends Equatable {
+abstract class SearchState {
   const SearchState();
-  
-  @override
-  List<Object> get props => [];
+  List<Object> get props =>[];
 }
 
-class SearchInitial extends SearchState {}
+class InitialSearchState extends SearchState {}
+
+class SearchLoading extends SearchState {}
+
+class SearchLoaded extends SearchState {
+  final List<dynamic> search;
+  const SearchLoaded(this.search);
+}
+
+class SearchNotLoaded extends SearchState {
+  final String? errorMessage;
+  const SearchNotLoaded(this.errorMessage);
+}

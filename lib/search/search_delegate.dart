@@ -1,6 +1,8 @@
 
 
+import 'package:desafio_flutter/bloc/search/search_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class SerieSearchDelegate extends SearchDelegate {
@@ -24,84 +26,76 @@ class SerieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return const Text('');
+    return BuildSearch(query: query);
   }
-
   @override
   Widget buildSuggestions(BuildContext context) {
-
+    
     if( query.isEmpty){
       return const Center(
         child: Icon(Icons.tv, color: Colors.black38, size:100)
       );
-    }else{
-      return Column(
-          children: [
-            Expanded(
-                child:StreamBuilder(
-                  builder: ( _ , AsyncSnapshot<List<dynamic>> snapshot){
-
-                    final series = snapshot.data ?? [ ];
-                    
-                    return ListView.builder(
-                        itemCount: series.length,
-                        itemBuilder: (_, i ){
-                          return _SerieContainer(instanceSerie:series[i]);
-                        }
-                    );
-                  }
-                )
-            )
-          ]
-        );
     }
+    return Container();
   }
-
 }
 
-class _SerieContainer extends StatelessWidget {
+class BuildSearch extends StatefulWidget {
+  final String query;
+  const BuildSearch({required this.query,super.key});
 
-  final dynamic instanceSerie;
+  @override
+  State<BuildSearch> createState() => _BuildSearchState(query:query);
+}
 
-  const _SerieContainer({required this.instanceSerie});
-  
+class _BuildSearchState extends State<BuildSearch> {
+  final String query;
+  late final SearchBloc _searchBloc=SearchBloc(query:query);
+  _BuildSearchState({required this.query});
+
   @override
   Widget build(BuildContext context) {
-    String urlImg = '';
-    if(instanceSerie['show']['image'] != null){
-      urlImg= instanceSerie['show']['image']['original'];
-    }else{
-      urlImg= 'https://www.classify24.com/wp-content/uploads/2015/11/no-image.png';
-    }
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(context,'details',arguments:instanceSerie['show']),
-      child: Container(
-        margin:const EdgeInsets.symmetric(vertical: 1),
-        color:const Color.fromARGB( 255, 255, 241, 201 ),
-        child:Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/loading1.gif'),
-                image: NetworkImage(urlImg),
-                width: 80,
-                height: 110,
-                fit:BoxFit.cover,
-              ),
-            ),
-            
-            Flexible(
-              child: Text(
-                instanceSerie['show']['name'],
-                maxLines: 3,
-                overflow: TextOverflow.visible,
-              )
-            )
-          ]
-        ),
-      )
-    );
+
+    _searchBloc.add(FetchSearch());
+    return Container(
+        margin:const EdgeInsets.all(8.0),
+        child: BlocProvider(
+          create: (_) => _searchBloc,
+          child:BlocListener <SearchBloc,SearchState> (
+            listener: (context, state){
+              if(state is SearchNotLoaded) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(state.errorMessage??'Error'))
+                );
+              }
+            },
+            child:BlocBuilder<SearchBloc,SearchState>(
+              builder: (context, state){
+                if(state is InitialSearchState){
+                  return const Center(child:CircularProgressIndicator());
+                }else if (state is SearchLoading){
+                  return const Center(child:CircularProgressIndicator());
+                }else if (state is SearchLoaded){
+                  return SingleChildScrollView(
+                    child: Column(
+                      children:
+                        List.generate(state.search.length, (index) => 
+                          ListTile(
+                            onTap: () => Navigator.pushNamed(context,'details',arguments:state.search[index]['show']),
+                            title:Text(state.search[index]['show']['name']),
+                            trailing: const Icon(Icons.arrow_forward_ios_outlined)
+                          )
+                        )
+                    )
+                  );
+                }else if (state is SearchNotLoaded){
+                  return Container();
+                }else {
+                  return Container();
+                }
+              })
+          ),
+        )
+      );
   }
 }

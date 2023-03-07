@@ -15,7 +15,7 @@ class ApiProvider {
   }
 
   Future<List> fetchEpisodesList(int nro) {
-    return fetch('$url/episodes/$nro');
+    return fetch('$url/seasons/$nro/episodes');
   }
   
   Future<List> fetchSearchList(String query) {
